@@ -11,16 +11,16 @@ const target = {
         //console.log(monitor.getItem().componentName);
         return props
     },
-    canDrop(props){
-        return 'yes'
-    }
+    // canDrop(props){
+    //     return 'yes'
+    // }
 }
 
 function collect(connect, monitor){
     return{
         connectDropTarget : connect.dropTarget(),
-        isOver : monitor.isOver(),
-        canDrop : monitor.canDrop(),
+        //isOver : monitor.isOver(),
+        //canDrop : monitor.canDrop(),
     }
 }
 

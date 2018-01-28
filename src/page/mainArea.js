@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import RGL, { WidthProvider } from "react-grid-layout";
 import 'react-grid-layout/css/styles.css';
-import './layout.css';
+
+import { connect } from 'react-redux'
 
 import { DndTypes } from '../config/dndTypes';
 import { DropTarget } from 'react-dnd';
@@ -11,21 +12,27 @@ const ReactGridLayout = WidthProvider(RGL);
 
 const mainTarget = {
     drop(props, monitor, component){
-       // console.log(monitor.getItem().componentName + ' dropped in '+props.dropAreaName);
-       //return {'ref':props.ref}
-       console.log(ReactDOM.findDOMNode(component.refs.test))
-       //console.log(component)
+        console.log(props)
+        return {
+            dropNode : ReactDOM.findDOMNode(component.refs.rootLayout)
+        }
     },
-    canDrop(props){
-        return 'yes'
-    }
+    // canDrop(props){
+    //     return 'yes'
+    // }
 }
 
 function collect(connect, monitor){
     return{
         connectDropTarget : connect.dropTarget(),
-        isOver : monitor.isOver(),
-        canDrop : monitor.canDrop(),
+        //isOver : monitor.isOver(),
+        //canDrop : monitor.canDrop(),
+    }
+}
+
+function injectState(state){
+    return {
+        layout : state.layout,
     }
 }
 
@@ -40,7 +47,7 @@ class MainArea extends Component {
         const {connectDropTarget,isOver,canDrop,dropAreaName }=this.props;
         return connectDropTarget(
             <div className="main-area">
-                <ReactGridLayout ref='test'>
+                <ReactGridLayout ref='rootLayout' layout={this.props.layout}>
                     {this.props.children}
                 </ReactGridLayout>
             </div>
@@ -48,4 +55,4 @@ class MainArea extends Component {
     } 
 }
 
-export default DropTarget(DndTypes.LIST_ITEM, mainTarget, collect)(MainArea);
+export default connect(injectState)(DropTarget(DndTypes.LIST_ITEM, mainTarget, collect)(MainArea));
