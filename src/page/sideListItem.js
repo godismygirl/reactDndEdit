@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux'
+import { ADD_LAYOUT } from '../store/actions'
+
 import { DndTypes } from '../config/dndTypes';
 import { DragSource } from 'react-dnd';
 
@@ -10,8 +13,17 @@ const listSource = {
         }
     },
     endDrag(props, monitor,component){
-        console.log(monitor.getDropResult())
-        //console.log(component)
+        //let dropNode = monitor.getDropResult().dropNode;
+        console.log(props);
+        // ReactDOM.render(
+        //     <div>hello</div>, dropNode
+        // )
+        props.dispatch({
+            type : ADD_LAYOUT,
+            dropNode : monitor.getDropResult().dropNode,
+            key:'a'
+        })
+
     }
 }
 
@@ -32,4 +44,4 @@ class SideListItem extends Component {
     }
 }
 
-export default DragSource(DndTypes.LIST_ITEM, listSource, collect)(SideListItem)
+export default connect()(DragSource(DndTypes.LIST_ITEM, listSource, collect)(SideListItem))
