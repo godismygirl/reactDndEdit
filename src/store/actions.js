@@ -1,4 +1,5 @@
 export const ADD_LAYOUT = 'ADD_LAYOUT';
+export const CHANGE_LAYOUT = 'CHANGE_LAYOUT';
 export const REMOVE_LAYOUT = 'REMOVE_LAYOUT';
 
 // export function addLayout(id, text) {

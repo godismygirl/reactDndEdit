@@ -13,16 +13,13 @@ const listSource = {
         }
     },
     endDrag(props, monitor,component){
-        //let dropNode = monitor.getDropResult().dropNode;
-        console.log(props);
-        // ReactDOM.render(
-        //     <div>hello</div>, dropNode
-        // )
-        props.dispatch({
-            type : ADD_LAYOUT,
-            dropNode : monitor.getDropResult().dropNode,
-            key:'a'
-        })
+        
+        if(monitor.didDrop()){
+            props.dispatch({
+                type : ADD_LAYOUT,
+                key: monitor.getDropResult().dropAreaKey
+            })
+        }
 
     }
 }

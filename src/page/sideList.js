@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import SideListItem from './sideListItem';
 
-import component_layout from '../components/layout';
-import component_title from '../components/title';
-
 class SideList extends Component{
     render(){
         
