@@ -13,7 +13,7 @@ const listSource = {
         }
     },
     endDrag(props, monitor,component){
-        
+        console.log(monitor.getDropResult())
         if(monitor.didDrop()){
             props.dispatch({
                 type : ADD_LAYOUT,

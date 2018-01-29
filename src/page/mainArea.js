@@ -22,7 +22,8 @@ function getStyle(backgroundColor){
 const mainTarget = {
     drop(props, monitor,component){
         const hasDroppedOnChild = monitor.didDrop();
-        console.log(component.props)
+        // console.log(component.props)
+        // console.log(props)
 		if ( !hasDroppedOnChild) {
 			return {
                 dropAreaKey : component.props.dropAreaKey
@@ -99,13 +100,10 @@ class MainArea extends Component {
     }
 
     onLayoutChange(layout){
-        let self = this;
-
-       // console.log(this.props)
 
         this.props.dispatch({
             type : CHANGE_LAYOUT,
-            key: self.props.dropAreaKey,
+            key: this.props.dropAreaKey,
             newLayout : layout,
         })
     }
@@ -113,7 +111,6 @@ class MainArea extends Component {
     render(){
         const {connectDropTarget,isOverCurrent }=this.props;
         // const { hasDropped, hasDroppedOnChild } = this.state;
-
         let backgroundColor = 'rgba(0, 0, 0, .1)'
 
         if (isOverCurrent) {
@@ -122,7 +119,7 @@ class MainArea extends Component {
 
         return connectDropTarget(
             <div className="main-area"  style={getStyle(backgroundColor)}>
-                <ReactGridLayout layout={this.props.layout} onLayoutChange={this.onLayoutChange}>
+                <ReactGridLayout layout={this.props.layout} onLayoutChange={this.onLayoutChange} compactType={null} >
                     {this.props.layout.map( (item, index) => this.createLayoutItem(item))}
                 </ReactGridLayout>
             </div>
@@ -130,4 +127,4 @@ class MainArea extends Component {
     } 
 }
 
-export default DropTarget(DndTypes.LIST_ITEM, mainTarget, collect)(connect(injectState)(MainArea));
+export default connect(injectState)(DropTarget(DndTypes.LIST_ITEM, mainTarget, collect)(MainArea))

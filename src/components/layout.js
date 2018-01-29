@@ -62,12 +62,9 @@ class Layout extends Component {
 
     onLayoutChange(layout){
 
-        let self = this;
-        console.log(self.props)
-
         this.props.dispatch({
             type : CHANGE_LAYOUT,
-            key: self.props.dropAreaKey,
+            key: this.props.dropAreaKey,
             newLayout : layout,
         })
     }
@@ -84,7 +81,7 @@ class Layout extends Component {
 
         return connectDropTarget(
             <div style={getStyle(backgroundColor)}>
-                <ReactGridLayout onDragStart={this.onDragStart} layout={this.props.layout} onLayoutChange={this.onLayoutChange}>
+                <ReactGridLayout onDragStart={this.onDragStart} compactType={null} layout={this.props.layout} onLayoutChange={this.onLayoutChange}>
                     {this.props.children}
                 </ReactGridLayout>
             </div>
@@ -92,4 +89,4 @@ class Layout extends Component {
     }
 }
 
-export default DropTarget(DndTypes.LIST_ITEM, target, collect)(connect()(Layout));
+export default connect()(DropTarget(DndTypes.LIST_ITEM, target, collect)(Layout));
