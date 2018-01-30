@@ -61,7 +61,7 @@ class Layout extends Component {
     }
 
     onLayoutChange(layout){
-
+        return
         this.props.dispatch({
             type : CHANGE_LAYOUT,
             key: this.props.dropAreaKey,
@@ -73,7 +73,7 @@ class Layout extends Component {
         const {connectDropTarget, isOverCurrent }=this.props;
         // const { hasDropped, hasDroppedOnChild } = this.state;
 
-        let backgroundColor = 'rgba(0, 0, 0, .1)'
+        let backgroundColor = '#f8f8f8'
 
         if (isOverCurrent) {
 			backgroundColor = 'darkgreen'

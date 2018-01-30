@@ -58,6 +58,7 @@ class MainArea extends Component {
     constructor(props) {
         super(props)
         this.onLayoutChange = this.onLayoutChange.bind(this);
+        this.createLayout = this.createLayout.bind(this);
 		// this.state = {
 		// 	hasDropped: false,
 		// 	hasDroppedOnChild: false,
@@ -69,34 +70,20 @@ class MainArea extends Component {
         dropAreaKey : 'root'
     }
 
-    trimGridData(item){
-        return item
-    }
-
-    createLayoutItem(item){
-        return (
-            <div key={item.i}>
-                <Layout dropAreaKey={item.i} layout={item.layout}>
-                    {this.renderInner(item)}
-                </Layout>
-            </div>
-        )
-    }
-
-    renderInner(data){
-        if(data.layout){
-            return data.layout.map( (item , index) => (
-                this.createLayoutItem(item)
-            ))
+    createLayout(layout){
+        if( layout && layout.length > 0 ){
+            return  layout.map(item => 
+                <div key={item.i} data-grid={item}>
+                    <Layout dropAreaKey={item.i}>
+                        {this.createLayout(item.layout)}
+                    </Layout>
+                </div>
+            )
         }
 
-        if(!data.layout && data.component){
-            this.appendComponent(data.component)
+        if(layout.component && layout.component.length > 0){
+
         }
-    }
-
-    appendComponent(componentName){
-
     }
 
     onLayoutChange(layout){
@@ -111,7 +98,7 @@ class MainArea extends Component {
     render(){
         const {connectDropTarget,isOverCurrent }=this.props;
         // const { hasDropped, hasDroppedOnChild } = this.state;
-        let backgroundColor = 'rgba(0, 0, 0, .1)'
+        let backgroundColor = '#f8f8f8'
 
         if (isOverCurrent) {
 			backgroundColor = 'darkgreen'
@@ -120,7 +107,7 @@ class MainArea extends Component {
         return connectDropTarget(
             <div className="main-area"  style={getStyle(backgroundColor)}>
                 <ReactGridLayout layout={this.props.layout} onLayoutChange={this.onLayoutChange} compactType={null} >
-                    {this.props.layout.map( (item, index) => this.createLayoutItem(item))}
+                    {this.createLayout(this.props.layout)}   
                 </ReactGridLayout>
             </div>
         )

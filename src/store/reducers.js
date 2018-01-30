@@ -16,53 +16,67 @@ function updateLayout(state = [], action){
 
 function addLayout(state, action){
     console.log('===trigger add layout===')
-    console.log(action)
-    console.log(state)
+    // console.log(action)
+    // console.log(state)
+
+    function getPosition(arrLayout){
+        let x = 0;
+        let y = 0;
+        if(arrLayout.length > 0){
+            let prevItem = arrLayout[arrLayout.length - 1];
+            console.log(prevItem)
+            if( 12 - prevItem.x - prevItem.w >= 4 ){
+                x = prevItem.x + prevItem.w;
+                y = prevItem.y
+            }
+        }
+        //console.log("x: "+x+' / y: '+y)
+        return {
+            x : x,
+            y : y,
+        }
+    }
 
     function addRootLayoutItem(state){
         let newState = Object.assign([], state);
 
-        function getPosition(){
-            let x = 0;
-            let y = 0;
-            if(newState.length > 0){
-                let prevItem = newState[newState.length - 1];
-                console.log(prevItem)
-                if( 12 - prevItem.x - prevItem.w >= 4 ){
-                    x = prevItem.x + prevItem.w;
-                    y = prevItem.y
-                }
-            }
-            return {
-                x : x,
-                y : y,
-            }
-        }
-        let newProp = {
+        newState.push({
             i : newState.length.toString(),
             w : 4,
             h : 2,
-            x : getPosition().x,
-            y : getPosition().y,
-        }
-
-        newState.push(newProp);
+            x : getPosition(newState).x,
+            y : getPosition(newState).y,
+            layout : [],
+        });
 
         return newState
     }
 
-    function addInnerLayoutItem(){
+    function addInnerLayoutItem(state, key){
+        let newState = Object.assign([], state);
+        let location = newState;
+        let indexKey = key.split('');
+        indexKey.forEach(element => {
+            location = location[parseInt(element)].layout;
+        });
 
+        location.push({
+            i : key + location.length.toString(),
+            w : 4,
+            h : 1,
+            x : getPosition(location).x,
+            y : getPosition(location).y,
+            layout : [],
+        });
+
+        return newState;
     }
 
     if(action.key === 'root'){
         return addRootLayoutItem(state)
-        //return Object.assign([], state, {i: (state.length + 1).toString(),})
+    }else{
+        return addInnerLayoutItem(state, action.key)
     }
-
-    let lalal = Object.assign([],state,[{i: "0", x: 0, y: 0, w: 4, h: 2, layout:[{i: "01", x: 0, y: 0, w: 2, h: 2},{i: "02", x: 2, y: 0, w: 2, h: 2}]}])
-
-    return lalal
 }
 
 function changeLayout(state, action){
