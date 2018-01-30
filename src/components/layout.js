@@ -17,19 +17,11 @@ const target = {
                 dropAreaKey : props.dropAreaKey
             }
         }
-        // console.log(props)
-		// component.setState({
-		// 	hasDropped: true,
-		// 	hasDroppedOnChild,
-		// })
-        //console.log(monitor.getItem().componentName);
-        
     }
 }
 
 function getStyle(backgroundColor){
     return {
-		border: '1px solid rgba(0,0,0,0.2)',
         backgroundColor,
         height:'100%',
 	}
@@ -61,7 +53,7 @@ class Layout extends Component {
     }
 
     onLayoutChange(layout){
-        return
+
         this.props.dispatch({
             type : CHANGE_LAYOUT,
             key: this.props.dropAreaKey,

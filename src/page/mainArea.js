@@ -59,10 +59,6 @@ class MainArea extends Component {
         super(props)
         this.onLayoutChange = this.onLayoutChange.bind(this);
         this.createLayout = this.createLayout.bind(this);
-		// this.state = {
-		// 	hasDropped: false,
-		// 	hasDroppedOnChild: false,
-		// }
 	}
 
     static defaultProps = {
@@ -74,7 +70,7 @@ class MainArea extends Component {
         if( layout && layout.length > 0 ){
             return  layout.map(item => 
                 <div key={item.i} data-grid={item}>
-                    <Layout dropAreaKey={item.i}>
+                    <Layout dropAreaKey={item.i} layout={item.layout}>
                         {this.createLayout(item.layout)}
                     </Layout>
                 </div>
@@ -106,9 +102,9 @@ class MainArea extends Component {
 
         return connectDropTarget(
             <div className="main-area"  style={getStyle(backgroundColor)}>
-                <ReactGridLayout layout={this.props.layout} onLayoutChange={this.onLayoutChange} compactType={null} >
-                    {this.createLayout(this.props.layout)}   
-                </ReactGridLayout>
+                <Layout layout={this.props.layout} dropAreaKey="root">
+                    {this.createLayout(this.props.layout)}
+                </Layout>
             </div>
         )
     } 
