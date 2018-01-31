@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-
-import RGL, { WidthProvider } from "react-grid-layout";
-import 'react-grid-layout/css/styles.css';
 import Layout from '../components/layout';
 
 import { connect } from 'react-redux'
@@ -10,7 +7,7 @@ import { CHANGE_LAYOUT } from '../store/actions'
 import { DndTypes } from '../config/dndTypes';
 import { DropTarget } from 'react-dnd';
 
-const ReactGridLayout = WidthProvider(RGL);
+import { getComponentByName } from '../util/helper'
 
 function getStyle(backgroundColor){
     return {
@@ -59,27 +56,28 @@ class MainArea extends Component {
         super(props)
         this.onLayoutChange = this.onLayoutChange.bind(this);
         this.createLayout = this.createLayout.bind(this);
+        this.renderLayout = this.renderLayout.bind(this);
+        this.renderComponent = this.renderComponent.bind(this);
 	}
-
-    static defaultProps = {
-        dropAreaName: 'mainArea',
-        dropAreaKey : 'root'
-    }
 
     createLayout(layout){
         if( layout && layout.length > 0 ){
             return  layout.map(item => 
                 <div key={item.i} data-grid={item}>
-                    <Layout dropAreaKey={item.i} layout={item.layout}>
-                        {this.createLayout(item.layout)}
-                    </Layout>
+                    {item.component ? this.renderComponent(item.component) : this.renderLayout(item)}
                 </div>
             )
         }
+    }
 
-        if(layout.component && layout.component.length > 0){
+    renderLayout(layoutItem){
+        return <Layout dropAreaKey={layoutItem.i} layout={layoutItem.layout}>
+            {this.createLayout(layoutItem.layout)}
+        </Layout>
+    }
 
-        }
+    renderComponent(name){
+        return getComponentByName(name);
     }
 
     onLayoutChange(layout){

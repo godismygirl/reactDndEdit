@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
-import { ADD_LAYOUT } from '../store/actions'
+import { addComponent } from '../store/actions'
 
 import { DndTypes } from '../config/dndTypes';
 import { DragSource } from 'react-dnd';
@@ -15,10 +15,7 @@ const listSource = {
     endDrag(props, monitor,component){
         console.log(monitor.getDropResult())
         if(monitor.didDrop()){
-            props.dispatch({
-                type : ADD_LAYOUT,
-                key: monitor.getDropResult().dropAreaKey
-            })
+            props.dispatch(addComponent(props.componentName, monitor.getDropResult().dropAreaKey))
         }
 
     }

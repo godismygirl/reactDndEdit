@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { ADD_LAYOUT, CHANGE_LAYOUT, REMOVE_LAYOUT } from './actions'
+import { ADD_LAYOUT, CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT } from './actions'
 
 function updateLayout(state = [], action){
     switch (action.type){
@@ -9,6 +9,8 @@ function updateLayout(state = [], action){
             return changeLayout(state, action)
         case REMOVE_LAYOUT : 
             return removeLayout(state, action)
+        case ADD_COMPONENT :
+            return addComponent(state, action)
         default:
             return state
     }
@@ -18,13 +20,12 @@ function addLayout(state, action){
     console.log('===trigger add layout===')
     // console.log(action)
     // console.log(state)
-
     function getPosition(arrLayout){
         let x = 0;
         let y = 0;
         if(arrLayout.length > 0){
             let prevItem = arrLayout[arrLayout.length - 1];
-            console.log(prevItem)
+            //console.log(prevItem)
             if( 12 - prevItem.x - prevItem.w >= 4 ){
                 x = prevItem.x + prevItem.w;
                 y = prevItem.y
@@ -37,59 +38,65 @@ function addLayout(state, action){
         }
     }
 
-    function addRootLayoutItem(state){
-        let newState = Object.assign([], state);
+    let nextState = Object.assign([], state);
+    let location = nextState;
+    let i = location.length.toString();
+    let h = 2;
 
-        newState.push({
-            i : newState.length.toString(),
-            w : 4,
-            h : 2,
-            x : getPosition(newState).x,
-            y : getPosition(newState).y,
-            layout : [],
-        });
-
-        return newState
-    }
-
-    function addInnerLayoutItem(state, key){
-        let newState = Object.assign([], state);
-        let location = newState;
-        let indexKey = key.split('');
+    if(action.key !=='root'){
+        let indexKey = action.key.split('');
         indexKey.forEach(element => {
-            location = location[parseInt(element)].layout;
+            location = location[parseInt(element, 10)].layout;
         });
-
-        location.push({
-            i : key + location.length.toString(),
-            w : 4,
-            h : 1,
-            x : getPosition(location).x,
-            y : getPosition(location).y,
-            layout : [],
-        });
-
-        return newState;
+        i = action.key + location.length.toString();
+        h = 1;
     }
 
-    if(action.key === 'root'){
-        return addRootLayoutItem(state)
-    }else{
-        return addInnerLayoutItem(state, action.key)
-    }
+    location.push({
+        i : i,
+        w : 4,
+        h : h,
+        x : getPosition(location).x,
+        y : getPosition(location).y,
+        layout : [],
+    });
+
+    return nextState;
 }
 
 function changeLayout(state, action){
     console.log('===trigger change layout===')
-    console.log(action)
-    return state;
-    //return Object.assign({},state.layout,[{i: 'a', x: 0, y: 0, w: 1, h: 2}])
+    //console.log(action)
+    let nextState = Object.assign([], state);
+    let location = nextState;
+
+    if(action.key !== 'root' ){
+        let indexKey = action.key.split('');
+        indexKey.forEach(element => {
+            location = location[parseInt(element, 10)].layout;
+        });
+    }
+
+    action.newLayout.forEach( (item, index) => {
+        location[index].x = item.x ;
+        location[index].y = item.y ;
+        location[index].w = item.w ;
+        location[index].h = item.h ;
+    })
+
+    console.log(nextState)
+    return nextState;
 }
 
 function removeLayout(state, action){
     alert('trigger remove layout')
     console.log(action)
     return Object.assign({},state.layout,[{i: 'a', x: 0, y: 0, w: 1, h: 2}])
+}
+
+function addComponent(state, action){
+    let nextState = Object.assign([], state);
+    return nextState;
 }
 
 const visiualEditor = combineReducers({
