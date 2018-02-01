@@ -8,6 +8,7 @@ import { DndTypes } from '../config/dndTypes';
 import { DropTarget } from 'react-dnd';
 
 import { getComponentByName } from '../util/helper'
+import { LAYOUT } from '../config/componentList'
 
 function getStyle(backgroundColor){
     return {
@@ -64,7 +65,8 @@ class MainArea extends Component {
         if( layout && layout.length > 0 ){
             return  layout.map(item => 
                 <div key={item.i} data-grid={item}>
-                    {item.component ? this.renderComponent(item.component) : this.renderLayout(item)}
+                    { item.component === LAYOUT ? this.renderLayout(item) : this.renderComponent(item.component) }
+                    {/* {item.component ? this.renderComponent(item.component) : this.renderLayout(item)} */}
                 </div>
             )
         }

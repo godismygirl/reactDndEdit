@@ -1,23 +1,22 @@
 import { combineReducers } from 'redux'
-import { ADD_LAYOUT, CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT } from './actions'
+import { CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT } from './actions'
 
 function updateLayout(state = [], action){
+
     switch (action.type){
-        case ADD_LAYOUT : 
-            return addLayout(state, action)
+        case ADD_COMPONENT : 
+            return addComponent(state, action)
         case CHANGE_LAYOUT : 
             return changeLayout(state, action)
         case REMOVE_LAYOUT : 
             return removeLayout(state, action)
-        case ADD_COMPONENT :
-            return addComponent(state, action)
         default:
             return state
     }
 }
 
-function addLayout(state, action){
-    console.log('===trigger add layout===')
+function addComponent(state, action){
+    console.log('===trigger add component===')
     // console.log(action)
     // console.log(state)
     function getPosition(arrLayout){
@@ -25,13 +24,11 @@ function addLayout(state, action){
         let y = 0;
         if(arrLayout.length > 0){
             let prevItem = arrLayout[arrLayout.length - 1];
-            //console.log(prevItem)
             if( 12 - prevItem.x - prevItem.w >= 4 ){
                 x = prevItem.x + prevItem.w;
                 y = prevItem.y
             }
         }
-        //console.log("x: "+x+' / y: '+y)
         return {
             x : x,
             y : y,
@@ -58,7 +55,8 @@ function addLayout(state, action){
         h : h,
         x : getPosition(location).x,
         y : getPosition(location).y,
-        layout : [],
+        layout : [], 
+        component : action.component,
     });
 
     return nextState;
@@ -83,21 +81,17 @@ function changeLayout(state, action){
         location[index].w = item.w ;
         location[index].h = item.h ;
     })
-
-    console.log(nextState)
+    //console.log(nextState)
     return nextState;
 }
 
 function removeLayout(state, action){
-    alert('trigger remove layout')
-    console.log(action)
-    return Object.assign({},state.layout,[{i: 'a', x: 0, y: 0, w: 1, h: 2}])
-}
-
-function addComponent(state, action){
+    //alert('trigger remove layout')
     let nextState = Object.assign([], state);
+
     return nextState;
 }
+
 
 const visiualEditor = combineReducers({
     availableComponent: [],

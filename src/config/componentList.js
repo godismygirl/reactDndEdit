@@ -1,4 +1,7 @@
+export const LAYOUT = 'layout'
+export const TITLE = 'title'
+
 export const componentList = [
-    {name:'layout', text:'layout'},
-    {name:'title', text:'test title'}
+    {name:LAYOUT, text:LAYOUT},
+    {name:TITLE, text:TITLE}
 ]
