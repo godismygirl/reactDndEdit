@@ -1,7 +1,7 @@
 import React from 'react';
 import Title from '../components/title';
 
-export function getComponentByName(name){
+function getComponentByName(name){
     switch ( name ) {
         case 'title' :
             return <Title />
@@ -10,11 +10,4 @@ export function getComponentByName(name){
     }   
 }
 
-export function getActionTypeByName(name){
-    switch (name) {
-        case '' :
-            return 
-        default : 
-            return 
-    }
-}
+export { getComponentByName }

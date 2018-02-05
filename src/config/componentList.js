@@ -1,7 +1,9 @@
-export const LAYOUT = 'layout'
-export const TITLE = 'title'
+const LAYOUT = 'layout'
+const TITLE = 'title'
 
-export const componentList = [
+const componentList = [
     {name:LAYOUT, text:LAYOUT},
     {name:TITLE, text:TITLE}
 ]
+
+export { LAYOUT, TITLE, componentList }

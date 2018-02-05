@@ -1,11 +1,13 @@
-export const ADD_COMPONENT = 'ADD_COMPONENT';
-export const CHANGE_LAYOUT = 'CHANGE_LAYOUT';
-export const REMOVE_LAYOUT = 'REMOVE_LAYOUT';
+const ADD_COMPONENT = 'ADD_COMPONENT';
+const CHANGE_LAYOUT = 'CHANGE_LAYOUT';
+const REMOVE_LAYOUT = 'REMOVE_LAYOUT';
 
-export function addComponent(componentName , key){
+function addComponent(componentName , key){
     return {
         type : ADD_COMPONENT,
         key : key,
         component : componentName,
     }
 }
+
+export { ADD_COMPONENT, CHANGE_LAYOUT, REMOVE_LAYOUT, addComponent }
