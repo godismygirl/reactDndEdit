@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import { CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT } from './actions'
+import defaultEchartsOption from '../config/defaultEchartsOption'
 
 function updateLayout(state = [], action){
 
@@ -92,9 +93,30 @@ function removeLayout(state, action){
     return nextState;
 }
 
+function updateComponents(state = {}, action){
+    switch (action.type){
+        case ADD_COMPONENT : 
+            return renderComponent(state, action)
+        default:
+            return state
+    }
+}
+
+function renderComponent(state={}, action){
+    console.log('====render component====')
+    //console.log(action)
+    let nextState = Object.assign({}, state);
+
+    if(!state[action.key]){
+        nextState[action.key] = defaultEchartsOption;
+    }
+    
+    return nextState
+}
+
 
 const visiualEditor = combineReducers({
-    availableComponent: [],
+    components: updateComponents,
     layout: updateLayout,
 })
 

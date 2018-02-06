@@ -27,13 +27,6 @@ const mainTarget = {
                 dropAreaKey : component.props.dropAreaKey
             }
 		}
-
-		// component.setState({
-		// 	hasDropped: true,
-		// 	hasDroppedOnChild,
-		// })
-        //console.log(monitor.getItem().componentName);
-  
     }
 }
 
@@ -65,8 +58,7 @@ class MainArea extends Component {
         if( layout && layout.length > 0 ){
             return  layout.map(item => 
                 <div key={item.i} data-grid={item}>
-                    { item.component === LAYOUT ? this.renderLayout(item) : this.renderComponent(item.component) }
-                    {/* {item.component ? this.renderComponent(item.component) : this.renderLayout(item)} */}
+                    { item.component === LAYOUT ? this.renderLayout(item) : this.renderComponent(item.component, item.i) }
                 </div>
             )
         }
@@ -78,8 +70,8 @@ class MainArea extends Component {
         </Layout>
     }
 
-    renderComponent(name){
-        return getComponentByName(name);
+    renderComponent(name, key){
+        return getComponentByName(name, key);
     }
 
     onLayoutChange(layout){

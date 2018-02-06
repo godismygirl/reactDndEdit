@@ -15,7 +15,8 @@ const target = {
         const hasDroppedOnChild = monitor.didDrop()
 		if (!hasDroppedOnChild) {
 			return{
-                dropAreaKey : props.dropAreaKey
+                dropAreaKey : props.dropAreaKey,
+                p : props.layout,
             }
         }
     }
