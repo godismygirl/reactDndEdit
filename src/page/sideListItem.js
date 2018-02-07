@@ -31,7 +31,7 @@ class SideListItem extends Component {
     render(){
         const { connectDragSource } = this.props;
         return connectDragSource (
-            <li onClick={this.props.onClick}>
+            <li>
                 { this.props.text }
             </li>
         )

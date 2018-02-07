@@ -1,0 +1,30 @@
+html,body,#root,#editor{
+    margin:0;
+    padding:0;
+    height:100%;
+}
+#editor .side-list{
+    position: fixed;
+    left:0;
+    top:0;
+    height:100%;
+    width:150px;
+    border-right:1px solid #ccc;
+}
+#editor .viewport{
+    margin-left:150px;
+    margin-right:300px;
+    height:100%;
+}
+#editor .control-panel{
+    position: fixed;
+    right:0;
+    top:0;
+    height:100%;
+    width:300px;
+    border-left:1px solid #ccc;
+}
+.react-grid-item{
+    border:1px solid #ddd;
+    background:#f8f8f8;
+}

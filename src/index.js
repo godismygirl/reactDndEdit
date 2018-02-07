@@ -1,17 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Viewport from './page/viewport'
+import Editor from './page/editor'
 import registerServiceWorker from './registerServiceWorker'
 
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import visiualEditor from './store/reducers'
+import editorStore from './store/reducers'
 
-let store = createStore(visiualEditor)
+let store = createStore(editorStore)
 
 ReactDOM.render(
     <Provider store={store}>
-        <Viewport />
+        <Editor />
     </Provider>
     , document.getElementById('root')
 );

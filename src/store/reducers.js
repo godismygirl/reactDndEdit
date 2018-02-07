@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux'
-import { CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT } from './actions'
-import defaultEchartsOption from '../config/defaultEchartsOption'
+import { CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT, RENDER_PANEL } from './actions'
+
+const initialState = {
+    currentOption : {},
+    layout : []
+}
 
 function updateLayout(state = [], action){
 
@@ -11,10 +15,13 @@ function updateLayout(state = [], action){
             return changeLayout(state, action)
         case REMOVE_LAYOUT : 
             return removeLayout(state, action)
+        case RENDER_PANEL :
+            return renderPanel(state, action)
         default:
             return state
     }
 }
+
 
 function addComponent(state, action){
     console.log('===trigger add component===')
@@ -59,6 +66,7 @@ function addComponent(state, action){
         layout : [], 
         component : action.component,
     });
+    console.log(nextState)
 
     return nextState;
 }
@@ -93,30 +101,13 @@ function removeLayout(state, action){
     return nextState;
 }
 
-function updateComponents(state = {}, action){
-    switch (action.type){
-        case ADD_COMPONENT : 
-            return renderComponent(state, action)
-        default:
-            return state
-    }
+function renderPanel(state = {}, action){
+    let nextState = Object.assign([], state);
+    console.log(state)
+    return nextState;
 }
-
-function renderComponent(state={}, action){
-    console.log('====render component====')
-    //console.log(action)
-    let nextState = Object.assign({}, state);
-
-    if(!state[action.key]){
-        nextState[action.key] = defaultEchartsOption;
-    }
-    
-    return nextState
-}
-
 
 const visiualEditor = combineReducers({
-    components: updateComponents,
     layout: updateLayout,
 })
 

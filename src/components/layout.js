@@ -12,11 +12,10 @@ const ReactGridLayout = WidthProvider(RGL);
 
 const target = {
     drop(props, monitor,component){
-        const hasDroppedOnChild = monitor.didDrop()
+        const hasDroppedOnChild = monitor.didDrop();
 		if (!hasDroppedOnChild) {
 			return{
                 dropAreaKey : props.dropAreaKey,
-                p : props.layout,
             }
         }
     }

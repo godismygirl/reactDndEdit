@@ -3,16 +3,30 @@ import Title from '../components/title'
 import Chart from '../components/chart'
 import defaultEchartOption from '../config/defaultEchartsOption'
 
-function getComponentByName(name, key){
-    console.log(key)
+function getDefaultOptions(name){
     switch ( name ) {
+        case 'title' :
+            return {
+                text : 'title'
+            }
+        case 'chart' :
+            return defaultEchartOption
+        default : 
+            return {}
+    }   
+}
+
+function getComponent(component){
+
+    switch ( component.name ) {
         case 'title' :
             return <Title />
         case 'chart' :
-            return <Chart keyIndex={key}/>
+            return <Chart option = {component.option}/>
         default : 
             return
     }   
 }
 
-export { getComponentByName }
+
+export { getComponent, getDefaultOptions }
