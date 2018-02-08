@@ -4,49 +4,18 @@ import Layout from '../components/layout'
 import { connect } from 'react-redux'
 import { CHANGE_LAYOUT, RENDER_PANEL } from '../store/actions'
 
-import { DndTypes } from '../config/dndTypes'
-import { DropTarget } from 'react-dnd'
-
 import { getComponent } from '../util/helper'
 import { LAYOUT } from '../config/componentList'
 
-function getStyle(backgroundColor){
+function injectState(state, ownprops){
+    console.log(ownprops)
     return {
-        backgroundColor,
-        height:'100%',
-	}
-}
-
-const mainTarget = {
-    drop(props, monitor,component){
-        const hasDroppedOnChild = monitor.didDrop();
-        // console.log(component.props)
-        // console.log(props)
-		if ( !hasDroppedOnChild) {
-			return {
-                dropAreaKey : component.props.dropAreaKey
-            }
-		}
-    }
-}
-
-function collect(connect, monitor){
-    return{
-        connectDropTarget : connect.dropTarget(),
-        // isOver : monitor.isOver(),
-        isOverCurrent: monitor.isOver({ shallow: true }),
-        //canDrop : monitor.canDrop(),
-    }
-}
-
-function injectState(state){
-    //console.log(state)
-    return {
-        layout : state.layout,
+        layout : state.layout["0"],
     }
 }
 
 class Viewport extends Component {
+
     constructor(props) {
         super(props)
         this.onLayoutChange = this.onLayoutChange.bind(this);
@@ -66,10 +35,8 @@ class Viewport extends Component {
         }
     }
 
-    renderLayout(layoutItem){
-        return <Layout dropAreaKey={layoutItem.i}>
-            {this.createLayout(layoutItem.layout)}
-        </Layout>
+    renderLayout(dropAreaKey){
+        return <Layout dropAreaKey={dropAreaKey} renderChildren={(a,b) => this.renderChildren(a,b)}/>
     }
 
     renderComponent(component){
@@ -93,23 +60,28 @@ class Viewport extends Component {
         })
     }
 
-    render(){
-        const {connectDropTarget,isOverCurrent }=this.props;
-        // const { hasDropped, hasDroppedOnChild } = this.state;
-        let backgroundColor = '#f8f8f8'
-
-        if (isOverCurrent) {
-			backgroundColor = 'darkgreen'
-		}
-
-        return connectDropTarget(
-            <div style={getStyle(backgroundColor)}>
-                <Layout dropAreaKey="root">
-                    {this.createLayout(this.props.layout)}
-                </Layout>
-            </div>
+    renderChildren(layout, parentKey){
+        console.log("layout: "+layout)
+        console.log("parentKey: "+parentKey)
+        // let key = parentKey + '-' + item.i;
+        // console.log("key: "+key);
+        // return <Layout dropAreaKey={key} renderChildren={ this.renderChildren(item, key)} />
+        return (
+            layout.map(item => 
+                    <div key={item.i}>
+                        {item.component.name === 'layout'? this.renderLayout(parentKey + '-' + item.i) : this.renderComponent(item.component)}
+                    </div>
+            )
         )
+        
+        
+    }
+
+    render(){
+
+        return <Layout dropAreaKey="0" renderChildren={ (layout, parentKey) => this.renderChildren(layout, parentKey)} />
+
     } 
 }
 
-export default connect(injectState)(DropTarget(DndTypes.LIST_ITEM, mainTarget, collect)(Viewport))
+export default connect()(Viewport)

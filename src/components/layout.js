@@ -36,6 +36,14 @@ function collect(connect, monitor){
     }
 }
 
+function select(state, ownProps){
+    console.log(ownProps)
+    console.log(state)
+    return{
+        layout : state.layout[ownProps.dropAreaKey]? state.layout[ownProps.dropAreaKey]:[]
+    }
+}
+
 class Layout extends Component {
 
     constructor(props) {
@@ -62,8 +70,18 @@ class Layout extends Component {
         })
     }
 
+    renderLayout(){
+
+        console.log(this.props.layout)
+        return
+            this.props.layout.map( item => <div key={item.i}>
+                {this.props.renderChildren(item.i)}
+            </div>)
+
+    }
+
     render(){
-        const {connectDropTarget, isOverCurrent }=this.props;
+        const {connectDropTarget, isOverCurrent, dropAreaKey}=this.props;
         // const { hasDropped, hasDroppedOnChild } = this.state;
 
         let backgroundColor = '#f8f8f8'
@@ -74,12 +92,12 @@ class Layout extends Component {
 
         return connectDropTarget(
             <div style={getStyle(backgroundColor)}>
-                <ReactGridLayout onDragStart={this.onDragStart} compactType={null} onLayoutChange={this.onLayoutChange}>
-                    {this.props.children}
+                <ReactGridLayout layout={this.props.layout} onDragStart={this.onDragStart} compactType={null} col={8} >
+                    {this.props.renderChildren(this.props.layout, dropAreaKey)}
                 </ReactGridLayout>
             </div>
         )
     }
 }
 
-export default connect()(DropTarget(DndTypes.LIST_ITEM, target, collect)(Layout));
+export default connect(select)(DropTarget(DndTypes.LIST_ITEM, target, collect)(Layout));

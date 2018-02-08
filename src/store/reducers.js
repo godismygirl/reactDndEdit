@@ -1,16 +1,20 @@
 import { combineReducers } from 'redux'
 import { CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT, RENDER_PANEL, UPDATE_COMPONET } from './actions'
 
-const initialState = {
-    currentOption : {},
-    layout : []
+// const initialState = {
+//     currentOption : {},
+//     layout : []
+// }
+
+const initialLayout = {
+    "0" : []
 }
 
-function updateLayout(state = [], action){
+function updateLayout(state = initialLayout, action){
 
     switch (action.type){
         case ADD_COMPONENT : 
-            return addComponent(state, action)
+            return addComponent2(state, action)
         case CHANGE_LAYOUT : 
             return changeLayout(state, action)
         case REMOVE_LAYOUT : 
@@ -24,6 +28,42 @@ function updateLayout(state = [], action){
     }
 }
 
+function addComponent2(state, action){
+
+    function getPosition(arrLayout){
+        let x = 0;
+        let y = 0;
+        if(arrLayout.length > 0){
+            let prevItem = arrLayout[arrLayout.length - 1];
+            if( 12 - prevItem.x - prevItem.w >= 4 ){
+                x = prevItem.x + prevItem.w;
+                y = prevItem.y
+            }
+        }
+        return {
+            x : x,
+            y : y,
+        }
+    }
+
+    let nextState = Object.assign({}, state);
+    console.log("======== add ========")
+    if(!nextState[action.key]){
+        nextState[action.key] = []
+    }
+
+    nextState[action.key] = nextState[action.key].concat({
+        i : nextState[action.key].length.toString(),
+        w : 4,
+        h : 2,
+        x : getPosition(nextState[action.key]).x,
+        y : getPosition(nextState[action.key]).y,
+        component : action.component,
+    })
+ 
+    console.log(nextState)
+    return nextState
+}
 
 function addComponent(state, action){
     console.log('===trigger add component===')
