@@ -74,7 +74,7 @@ class Layout extends Component {
 
         return connectDropTarget(
             <div style={getStyle(backgroundColor)}>
-                <ReactGridLayout onDragStart={this.onDragStart} compactType={null} layout={this.props.layout} onLayoutChange={this.onLayoutChange}>
+                <ReactGridLayout onDragStart={this.onDragStart} compactType={null} onLayoutChange={this.onLayoutChange}>
                     {this.props.children}
                 </ReactGridLayout>
             </div>

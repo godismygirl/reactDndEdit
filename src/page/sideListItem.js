@@ -13,7 +13,7 @@ const listSource = {
         }
     },
     endDrag(props, monitor,component){
-        console.log(monitor.getDropResult())
+        //console.log(monitor.getDropResult())
         if(monitor.didDrop()){
             props.dispatch(addComponent(props.componentName, monitor.getDropResult().dropAreaKey))
         }

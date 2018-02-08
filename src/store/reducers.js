@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT, RENDER_PANEL } from './actions'
+import { CHANGE_LAYOUT, REMOVE_LAYOUT, ADD_COMPONENT, RENDER_PANEL, UPDATE_COMPONET } from './actions'
 
 const initialState = {
     currentOption : {},
@@ -17,6 +17,8 @@ function updateLayout(state = [], action){
             return removeLayout(state, action)
         case RENDER_PANEL :
             return renderPanel(state, action)
+        case UPDATE_COMPONET :
+            return updateComponent(state, action)
         default:
             return state
     }
@@ -101,6 +103,21 @@ function removeLayout(state, action){
     return nextState;
 }
 
+function updateComponent(state, action){
+    console.log("=====updateComponent====")
+    console.log(state)
+    let nextState = Object.assign([], state);
+    let location = nextState;
+    let keyIndex = action.key.split('');
+    keyIndex.forEach( (element, index) => {
+        location = keyIndex.length -1 === index ? location[parseInt(element, 10)] : location[parseInt(element, 10)].layout;
+    });
+
+    location.component.option = JSON.parse(action.newOption)
+    console.log(nextState)
+    return nextState;
+}
+
 function renderPanel(state = {}, action){
     let nextState = Object.assign([], state);
     console.log(state)
@@ -108,8 +125,22 @@ function renderPanel(state = {}, action){
 }
 
 const visiualEditor = combineReducers({
-    layout: updateLayout,
+    currentOptionKey : updateOptionKey,
+    layout : updateLayout,
 })
+
+function updateOptionKey(state="", action){
+    switch (action.type){
+        case RENDER_PANEL : {
+            let nextState = Object.assign("", state);
+            nextState = action.key;
+            console.log(nextState)
+            return nextState;
+        }
+        default : 
+            return state;
+    }
+}
 
 export default visiualEditor
   

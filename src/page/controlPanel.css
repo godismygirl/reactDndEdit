@@ -1,0 +1,18 @@
+.control-panel{
+    height: 100%;
+    position: relative;
+}
+.control-panel .save-change{
+    height: 36px;
+    background:#f5f5f5;
+    border-bottom:1px solid #ddd;
+    position: absolute;
+    width:100%;
+}
+.control-panel textarea{
+    height:100%;
+    width: 100%;
+    padding: 46px 10px 10px 10px;
+    box-sizing: border-box;
+    border:0;
+}

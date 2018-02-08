@@ -40,7 +40,7 @@ function collect(connect, monitor){
 }
 
 function injectState(state){
-    console.log(state)
+    //console.log(state)
     return {
         layout : state.layout,
     }
@@ -56,7 +56,7 @@ class Viewport extends Component {
 	}
 
     createLayout(layout){
-        console.log(layout)
+        //console.log(layout)
         if( layout && layout.length > 0 ){
             return  layout.map(item => 
                 <div key={item.i} data-grid={item} onClick={(e) => this.renderControlPanel(e, item.i)}>
@@ -67,7 +67,7 @@ class Viewport extends Component {
     }
 
     renderLayout(layoutItem){
-        return <Layout dropAreaKey={layoutItem.i} layout={layoutItem.layout}>
+        return <Layout dropAreaKey={layoutItem.i}>
             {this.createLayout(layoutItem.layout)}
         </Layout>
     }
@@ -104,7 +104,7 @@ class Viewport extends Component {
 
         return connectDropTarget(
             <div style={getStyle(backgroundColor)}>
-                <Layout layout={this.props.layout} dropAreaKey="root">
+                <Layout dropAreaKey="root">
                     {this.createLayout(this.props.layout)}
                 </Layout>
             </div>
