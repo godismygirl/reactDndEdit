@@ -1,26 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {UPDATE_COMPONET} from '../store/actions'
+import { updateOptions } from '../store/actions'
 import './controlPanel.css'
 
-function injectState(state){
-    //let keyIndex = state.currentOptionKey;
-    let location = state;
-    let currentOption = "";
-    let currentKey = "";
-
-    if(state.currentOptionKey !==""){
-        let keyIndex = state.currentOptionKey.split('');
-        keyIndex.forEach(element => {
-            location = location.layout[parseInt(element, 10)];
-        });
-        currentKey = state.currentOptionKey;
-        currentOption = location.component.option;
-    }
-
-    return{
-        currentKey : currentKey,
-        currentOption : currentOption,
+function mapStateToProps(state){
+    console.log(state)
+    let options = state.activeComponent.dropAreaKey ? state.layout[state.activeComponent.dropAreaKey][state.activeComponent.index].options : {}
+    console.log(options)
+    return {
+        activeComponent : state.activeComponent,
+        options : options,
     }
 }
 
@@ -32,18 +21,15 @@ class ControlPanel extends Component {
         }
     }
     componentWillReceiveProps(nextProps){
-        let code = JSON.stringify(nextProps.currentOption, null, 4)
-        this.setState({textareaValue:code})
+        let code = JSON.stringify(nextProps.options, null, 4)
+        this.setState({textareaValue : code})
     }
 
     saveChange(){
         //alert(this.refs.textarea.value)
         let option = this.refs.textarea.value.trim();
-        this.props.dispatch({
-            type : UPDATE_COMPONET,
-            key : this.props.currentKey,
-            newOption : option,
-        })
+        console.log(option)
+        this.props.dispatch(updateOptions(this.props.activeComponent, option))
     }
 
     onValueChange(event){
@@ -62,4 +48,4 @@ class ControlPanel extends Component {
     }
 }
 
-export default connect(injectState)(ControlPanel)
+export default connect(mapStateToProps)(ControlPanel)

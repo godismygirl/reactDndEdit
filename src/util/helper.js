@@ -16,13 +16,13 @@ function getDefaultOptions(name){
     }   
 }
 
-function getComponent(component){
-
-    switch ( component.name ) {
+function getComponent(component, options){
+    console.log(options)
+    switch (component) {
         case 'title' :
             return <Title />
         case 'chart' :
-            return <Chart option = {component.option}/>
+            return <Chart option = {options}/>
         default : 
             return
     }   

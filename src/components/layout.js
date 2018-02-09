@@ -3,7 +3,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 import 'react-grid-layout/css/styles.css';
 
 import { connect } from 'react-redux'
-import { CHANGE_LAYOUT } from '../store/actions'
+import { changeLayout, renderPanel } from '../store/actions'
 
 import { DndTypes } from '../config/dndTypes';
 import { DropTarget } from 'react-dnd';
@@ -37,10 +37,9 @@ function collect(connect, monitor){
 }
 
 function select(state, ownProps){
-    console.log(ownProps)
-    console.log(state)
+    // console.log(ownProps)
     return{
-        layout : state.layout[ownProps.dropAreaKey]? state.layout[ownProps.dropAreaKey]:[]
+        layout : state.layout[ownProps.dropAreaKey]
     }
 }
 
@@ -50,10 +49,6 @@ class Layout extends Component {
         super(props)
         this.onDragStart = this.onDragStart.bind(this);
         this.onLayoutChange = this.onLayoutChange.bind(this);
-		// this.state = {
-		// 	hasDropped: false,
-		// 	hasDroppedOnChild: false,
-		// }
 	}
 
     onDragStart(layout: Layout, oldItem: LayoutItem, newItem: LayoutItem,
@@ -61,28 +56,18 @@ class Layout extends Component {
         e.stopPropagation();
     }
 
-    onLayoutChange(layout){
-
-        this.props.dispatch({
-            type : CHANGE_LAYOUT,
-            key: this.props.dropAreaKey,
-            newLayout : layout,
-        })
+    onLayoutChange(newLayout){
+        this.props.dispatch(changeLayout(this.props.dropAreaKey, newLayout));
     }
 
-    renderLayout(){
-
-        console.log(this.props.layout)
-        return
-            this.props.layout.map( item => <div key={item.i}>
-                {this.props.renderChildren(item.i)}
-            </div>)
-
+    renderCodePanel(e, dropAreaKey, index){
+        console.log('uuuuuu')
+        e.stopPropagation();
+        this.props.dispatch(renderPanel(dropAreaKey, index));
     }
 
     render(){
         const {connectDropTarget, isOverCurrent, dropAreaKey}=this.props;
-        // const { hasDropped, hasDroppedOnChild } = this.state;
 
         let backgroundColor = '#f8f8f8'
 
@@ -91,11 +76,17 @@ class Layout extends Component {
 		}
 
         return connectDropTarget(
-            <div style={getStyle(backgroundColor)}>
-                <ReactGridLayout layout={this.props.layout} onDragStart={this.onDragStart} compactType={null} col={8} >
-                    {this.props.renderChildren(this.props.layout, dropAreaKey)}
-                </ReactGridLayout>
-            </div>
+            <section style={getStyle(backgroundColor)}>
+                {this.props.layout && 
+                    <ReactGridLayout layout={this.props.layout} onDragStart={this.onDragStart} compactType={null} onLayoutChange={this.onLayoutChange} >
+                        {this.props.layout.map(item => 
+                            <div key={item.i} onClick={ (e)=> this.renderCodePanel(e, dropAreaKey, item.i) }>
+                                {this.props.renderChildren(item.component, item.options, dropAreaKey+'-'+item.i)}
+                            </div>
+                        )}
+                    </ReactGridLayout>
+                }
+            </section>
         )
     }
 }
