@@ -36,7 +36,7 @@ function collect(connect, monitor){
     }
 }
 
-function select(state, ownProps){
+function mapStateToProps(state, ownProps){
     // console.log(ownProps)
     return{
         layout : state.layout[ownProps.dropAreaKey]
@@ -61,7 +61,6 @@ class Layout extends Component {
     }
 
     renderCodePanel(e, dropAreaKey, index){
-        console.log('uuuuuu')
         e.stopPropagation();
         this.props.dispatch(renderPanel(dropAreaKey, index));
     }
@@ -81,7 +80,7 @@ class Layout extends Component {
                     <ReactGridLayout layout={this.props.layout} onDragStart={this.onDragStart} compactType={null} onLayoutChange={this.onLayoutChange} >
                         {this.props.layout.map(item => 
                             <div key={item.i} onClick={ (e)=> this.renderCodePanel(e, dropAreaKey, item.i) }>
-                                {this.props.renderChildren(item.component, item.options, dropAreaKey+'-'+item.i)}
+                                {this.props.renderChildren(dropAreaKey, item)}
                             </div>
                         )}
                     </ReactGridLayout>
@@ -91,4 +90,4 @@ class Layout extends Component {
     }
 }
 
-export default connect(select)(DropTarget(DndTypes.LIST_ITEM, target, collect)(Layout));
+export default connect(mapStateToProps)(DropTarget(DndTypes.LIST_ITEM, target, collect)(Layout));

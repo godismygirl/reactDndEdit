@@ -6,19 +6,19 @@ import { LAYOUT } from '../config/componentList'
 
 class Viewport extends Component {
 
-    renderChildren(component, options, dropAreaKey){
+    renderChildren(dropAreaKey, item){
         //console.log("dropAreaKey: "+dropAreaKey)
         //let key = parentKey + '-' + item.i;
-        if(component === LAYOUT){
-            return <Layout dropAreaKey={dropAreaKey} renderChildren={ (a, b, c) => this.renderChildren(a, b, c) }/>
+        if(item.component === LAYOUT){
+            return <Layout dropAreaKey={dropAreaKey+'-'+item.i} renderChildren={ (a, b) => this.renderChildren(a, b) }/>
         } else{
-            return getComponent(component, options);
+            return getComponent(dropAreaKey, item);
         }
         
     }
 
     render(){
-        return <Layout dropAreaKey="0" renderChildren={ (a, b, c) => this.renderChildren(a, b, c)} />
+        return <Layout dropAreaKey="0" renderChildren={ (a, b) => this.renderChildren(a, b)} />
     } 
 }
 

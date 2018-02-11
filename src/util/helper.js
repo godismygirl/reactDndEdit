@@ -16,13 +16,12 @@ function getDefaultOptions(name){
     }   
 }
 
-function getComponent(component, options){
-    console.log(options)
-    switch (component) {
+function getComponent(dropAreaKey, item){
+    switch (item.component) {
         case 'title' :
             return <Title />
         case 'chart' :
-            return <Chart option = {options}/>
+            return <Chart dropAreaKey={dropAreaKey} keyIndex={parseInt(item.i, 10)} />
         default : 
             return
     }   

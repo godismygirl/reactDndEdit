@@ -26,9 +26,8 @@ class ControlPanel extends Component {
     }
 
     saveChange(){
-        //alert(this.refs.textarea.value)
         let option = this.refs.textarea.value.trim();
-        console.log(option)
+        //console.log(option)
         this.props.dispatch(updateOptions(this.props.activeComponent, option))
     }
 
